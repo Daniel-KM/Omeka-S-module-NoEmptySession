@@ -1,0 +1,42 @@
+{
+    "name": "daniel-km/omeka-s-module-no-empty-session",
+    "type": "omeka-s-module",
+    "description": "Module for Omeka S: Create session cookie only when there is something to store, not for each visitor and bot, for privacy and performance.",
+    "keywords": [
+        "Omeka S",
+        "Omeka S module",
+        "session",
+        "cookie",
+        "privacy",
+        "performance",
+        "gdpr"
+    ],
+    "license": "CECILL-2.1",
+    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-NoEmptySession",
+    "authors": [
+        {
+            "name": "Daniel Berthereau",
+            "email": "Daniel.packagist@Berthereau.net"
+        }
+    ],
+    "support": {
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-NoEmptySession/-/work_items",
+        "forum": "https://forum.omeka.org/"
+    },
+    "_require (not set until Omeka S merges PR #2432)": {
+        "omeka/omeka-s": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NoEmptySession\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NoEmptySessionTest\\": "tests/NoEmptySessionTest/"
+        }
+    },
+    "extra": {
+        "installer-name": "NoEmptySession"
+    }
+}
