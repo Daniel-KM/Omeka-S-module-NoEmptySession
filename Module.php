@@ -95,6 +95,7 @@ class Module extends AbstractModule
 
         if ($this->sessionTableStats()['rows'] < static::LARGE_TABLE_ROWS) {
             $connection->executeStatement('TRUNCATE TABLE `session`');
+            $this->addIndexModified('session');
             return false;
         }
 
@@ -104,11 +105,13 @@ class Module extends AbstractModule
         $script = __DIR__ . '/data/scripts/drop-table.php';
         if (!$phpPath || !is_readable($script)) {
             $connection->executeStatement('TRUNCATE TABLE `session`');
+            $this->addIndexModified('session');
             return false;
         }
 
         $connection->executeStatement('DROP TABLE IF EXISTS `session_noemptysession_new`');
         $connection->executeStatement('CREATE TABLE `session_noemptysession_new` LIKE `session`');
+        $this->addIndexModified('session_noemptysession_new');
         // A previous table may remain when the background drop failed.
         $connection->executeStatement('DROP TABLE IF EXISTS `session_noemptysession_old`');
         $connection->executeStatement('RENAME TABLE `session` TO `session_noemptysession_old`, `session_noemptysession_new` TO `session`');
@@ -120,6 +123,25 @@ class Module extends AbstractModule
             escapeshellarg(OMEKA_PATH)
         ));
         return true;
+    }
+
+    /**
+     * Add the index on the column "modified" when missing.
+     *
+     * The garbage collector of the sessions deletes the old ones by this column,
+     * so without index, it scans and locks the whole table. The table is empty
+     * here, so the index is added instantly.
+     */
+    protected function addIndexModified(string $table): void
+    {
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $this->getServiceLocator()->get('Omeka\Connection');
+        $exists = $connection->executeQuery(
+            "SHOW INDEX FROM `$table` WHERE `Column_name` = 'modified'"
+        )->fetchOne();
+        if (!$exists) {
+            $connection->executeStatement("ALTER TABLE `$table` ADD INDEX `modified` (`modified`)");
+        }
     }
 
     /**
