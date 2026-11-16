@@ -114,9 +114,10 @@ class Module extends AbstractModule
         $connection->executeStatement('RENAME TABLE `session` TO `session_noemptysession_old`, `session_noemptysession_new` TO `session`');
 
         $cli->execute(sprintf(
-            '%s %s > /dev/null 2>&1 &',
+            '%s %s --omeka-path %s > /dev/null 2>&1 &',
             escapeshellcmd($phpPath),
-            escapeshellarg($script)
+            escapeshellarg($script),
+            escapeshellarg(OMEKA_PATH)
         ));
         return true;
     }

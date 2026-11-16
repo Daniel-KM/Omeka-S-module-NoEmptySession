@@ -10,7 +10,10 @@
  * config/database.ini directly and uses PDO. The name of the table is fixed, so
  * no other table can be dropped.
  *
- * Usage: php drop-table.php
+ * Usage: php drop-table.php --omeka-path /path/to/omeka
+ *
+ * The path of Omeka is required when the module is a symbolic link, because php
+ * resolves the links in __DIR__.
  *
  * Exit code 0 always (background script: non-zero would not surface).
  *
@@ -24,7 +27,10 @@ $fail = function (string $msg): void {
     exit(0);
 };
 
-$omekaPath = realpath(__DIR__ . '/../../../..');
+$opts = getopt('', ['omeka-path:']);
+$omekaPath = empty($opts['omeka-path'])
+    ? realpath(__DIR__ . '/../../../..')
+    : realpath($opts['omeka-path']);
 if (!$omekaPath) {
     $fail('Cannot resolve Omeka root.');
 }
