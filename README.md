@@ -45,6 +45,21 @@ Usage
 
 The module has no settings and it works once enabled.
 
+The config form displays the size of the table of sessions and allows to empty
+it to get off to a good start.
+
+Omeka won't create session, but some modules and themes store data in cookie in
+all pages and, in that case, this module is useless.
+
+### For module developers
+
+It is recommended to avoid to store a value when it is useless.
+
+### For theme designers
+
+It is recommended to keep the login page separately or to manage it via ajax to
+avoid to force to store the session on each page.
+
 
 Warning
 -------
@@ -96,6 +111,8 @@ Copyright
 
 * Copyright Daniel Berthereau, 2026 (see [Daniel-KM] on GitLab)
 
+This module was build for the maintenance of the digital library [Numistral].
+
 
 [No Empty Session]: https://gitlab.com/Daniel-KM/Omeka-S-module-NoEmptySession
 [Omeka S]: https://omeka.org/s
@@ -107,4 +124,5 @@ Copyright
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org
 [GitLab]: https://gitlab.com/Daniel-KM
+[Numistral]: https://omeka.numistral.fr
 [Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
